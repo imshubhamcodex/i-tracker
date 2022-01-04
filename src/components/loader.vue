@@ -59,16 +59,19 @@ export default {
     );
 
     setTimeout(() => {
+      document.getElementsByTagName("circle")[0].style["stroke-dasharray"] =
+        "0";
+      document.getElementsByTagName("polygon")[0].style["stroke-dasharray"] =
+        "0";
+      document.getElementsByTagName("rect")[0].style["stroke-dasharray"] = "0";
       var tl = gsap.timeline({ onComplete: this.loadEnd });
-      tl.to("#tri", { opacity: 0, y: 30, ease: "power1.out" });
-      tl.to("#rect", { opacity: 0, x: -60, ease: "power1.out" }, "-=0.2");
-      tl.to("#circle", { opacity: 1, x: 70, ease: "power1.out" }, "-=0.1");
+      tl.to("#tri", { opacity: 0, y: 50, ease: "power1.out" });
+      tl.to("#rect", { opacity: 0, x: -80, ease: "power1.out" }, "-=0.1");
+      tl.to("#circle", { opacity: 1, x: 70, ease: "power1.out" }, "-=0.2");
     }, 3000);
   },
   methods: {
     loadEnd() {
-      document.getElementsByTagName("circle")[0].style["stroke-dasharray"] =
-        "0";
       setTimeout(() => {
         document.getElementsByTagName("circle")[0].style.display = "none";
         document.getElementById("toggle-circle").click();

@@ -2,15 +2,6 @@
   <v-app>
     <div id="app">
       <router-view />
-      <div id="toggler">
-        <v-switch
-          v-model="$vuetify.theme.dark"
-          hint="Vuetify theme"
-          inset
-          label="Vuetify Theme Dark"
-          persistent-hint
-        ></v-switch>
-      </div>
     </div>
   </v-app>
 </template>
@@ -41,12 +32,5 @@ export default {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-}
-
-#toggler {
-  position: absolute;
-  top: 0;
-  left: 20px;
 }
 </style>
