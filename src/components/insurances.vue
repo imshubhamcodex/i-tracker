@@ -3,7 +3,7 @@
     <div style="margin-bottom: 30px">
       <v-row>
         <v-col cols="12" md="2">
-          <span class="title ml-3 mr-5"> Insurances&nbsp; </span>
+          <span class="title ml-3 mr-5"> INSURANCES&nbsp; </span>
         </v-col>
       </v-row>
       <div id="insurance-add-button">
@@ -294,9 +294,9 @@ export default {
     margin-left: 12px;
   }
   #insurance-search-box {
-    width: 180px;
+    width: 160px;
     margin-top: -40px;
-    margin-right: 10px;
+    margin-right: 5px;
   }
   #insurance-add-button {
     margin-right: -10px;

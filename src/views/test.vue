@@ -54,11 +54,11 @@
               :key="item.title"
               link
             >
-              <v-list-item-icon>
+              <v-list-item-icon @click="openSection(item.title)">
                 <v-icon>{{ item.icon }}</v-icon>
               </v-list-item-icon>
 
-              <v-list-item-content>
+              <v-list-item-content @click="openSection(item.title)">
                 <v-list-item-title style="font-family: 'Roboto'">{{
                   item.title
                 }}</v-list-item-title>
@@ -69,9 +69,9 @@
       </v-card>
     </template>
     <v-main style="width: 100%">
-      <stocks v-if="false" id="stock-comp" class="mt-4 pb-6" />
-      <cryptos v-if="false" id="crypto-comp" class="mt-4 pb-6" />
-      <insurances v-if="true" id="crypto-comp" class="mt-4 pb-6" />
+      <stocks v-if="stocks" id="stock-comp" class="mt-4 pb-6" />
+      <cryptos v-if="cryptos" id="crypto-comp" class="mt-4 pb-6" />
+      <insurances v-if="insurances" id="insurances-comp" class="mt-4 pb-6" />
     </v-main>
   </v-app>
 </template>
@@ -83,11 +83,15 @@ export default {
   components: {
     stocks,
     cryptos,
-    insurances
+    insurances,
   },
   data() {
     return {
       drawer: true,
+      overview: true,
+      stocks: false,
+      cryptos: false,
+      insurances: false,
       items: [
         { title: "OVERVIEW", icon: "mdi-chart-pie" },
         { title: "STOCKS", icon: "mdi-briefcase" },
@@ -97,6 +101,31 @@ export default {
       ],
       mini: true,
     };
+  },
+  methods: {
+    openSection(section) {
+      if (section === "OVERVIEW") {
+        this.overview = true;
+        this.stocks = false;
+        this.cryptos = false;
+        this.insurances = false;
+      } else if (section === "STOCKS") {
+        this.overview = false;
+        this.stocks = true;
+        this.cryptos = false;
+        this.insurances = false;
+      } else if (section === "CRYPTO") {
+        this.overview = false;
+        this.stocks = false;
+        this.cryptos = true;
+        this.insurances = false;
+      } else if (section === "INSURANCE") {
+        this.overview = false;
+        this.stocks = false;
+        this.cryptos = false;
+        this.insurances = true;
+      }
+    },
   },
 };
 </script>
@@ -108,13 +137,15 @@ export default {
   margin-top: 20px;
 }
 #stock-comp,
-#crypto-comp {
+#crypto-comp,
+#insurances-comp {
   width: 100vw;
 }
 
 @media (max-width: 992px) {
   #stock-comp,
-  #crypto-comp {
+  #crypto-comp,
+  #insurances-comp {
     width: 80vw;
   }
 }
