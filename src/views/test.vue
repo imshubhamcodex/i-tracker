@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-app-bar app clipped-left>
-      <v-app-bar-nav-icon @click="mini=!mini"></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon @click="mini = !mini"></v-app-bar-nav-icon>
       <span class="title ml-3 mr-5"> FinTech&nbsp; </span>
       <v-spacer></v-spacer>
 
@@ -36,7 +36,9 @@
               ></v-img>
             </v-list-item-avatar>
 
-            <v-list-item-title style="font-family:'Roboto'">Gaurav Kumar</v-list-item-title>
+            <v-list-item-title style="font-family: 'Roboto'"
+              >Gaurav Kumar</v-list-item-title
+            >
 
             <v-btn icon @click.stop="mini = !mini">
               <v-icon>mdi-chevron-left</v-icon>
@@ -46,30 +48,43 @@
           <v-divider></v-divider>
 
           <v-list dense>
-            <v-list-item style="margin-top:15px;" v-for="item in items" :key="item.title" link>
-              <v-list-item-icon >
+            <v-list-item
+              style="margin-top: 15px"
+              v-for="item in items"
+              :key="item.title"
+              link
+            >
+              <v-list-item-icon>
                 <v-icon>{{ item.icon }}</v-icon>
               </v-list-item-icon>
 
               <v-list-item-content>
-                <v-list-item-title style="font-family:'Roboto';">{{ item.title }}</v-list-item-title>
+                <v-list-item-title style="font-family: 'Roboto'">{{
+                  item.title
+                }}</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
           </v-list>
         </v-navigation-drawer>
       </v-card>
     </template>
-    <v-main>
-      <v-container fluid class="fill-height">
-        <v-row justify="center" align="center">
-          <v-col class="shrink"> <p>hey</p> </v-col>
-        </v-row>
-      </v-container>
+    <v-main style="width: 100%">
+      <stocks v-if="false" id="stock-comp" class="mt-4 pb-6" />
+      <cryptos v-if="false" id="crypto-comp" class="mt-4 pb-6" />
+      <insurances v-if="true" id="crypto-comp" class="mt-4 pb-6" />
     </v-main>
   </v-app>
 </template>
 <script>
+import stocks from "../components/stocks.vue";
+import cryptos from "../components/cryptos.vue";
+import insurances from "../components/insurances.vue";
 export default {
+  components: {
+    stocks,
+    cryptos,
+    insurances
+  },
   data() {
     return {
       drawer: true,
@@ -88,8 +103,19 @@ export default {
 
 <style scoped>
 #toggler {
-  float:right;
-  zoom:0.8;
-  margin-top:20px;
+  float: right;
+  zoom: 0.8;
+  margin-top: 20px;
+}
+#stock-comp,
+#crypto-comp {
+  width: 100vw;
+}
+
+@media (max-width: 992px) {
+  #stock-comp,
+  #crypto-comp {
+    width: 80vw;
+  }
 }
 </style>

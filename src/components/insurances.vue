@@ -3,10 +3,10 @@
     <div style="margin-bottom: 30px">
       <v-row>
         <v-col cols="12" md="2">
-          <span class="title ml-3 mr-5"> STOCKS&nbsp; </span>
+          <span class="title ml-3 mr-5"> Insurances&nbsp; </span>
         </v-col>
       </v-row>
-      <div id="stock-add-button">
+      <div id="insurance-add-button">
         <v-btn
           @click="openBox('add', -1)"
           style="zoom: 0.8"
@@ -18,31 +18,31 @@
           <v-icon dark> mdi-plus </v-icon>
         </v-btn>
       </div>
-      <div id="stock-search-box">
+      <div id="insurance-search-box">
         <v-textarea
           append-icon="mdi-book-search-outline"
           class="mx-2"
-          label="Search stocks"
+          label="Search insurances"
           rows="1"
           outlined
           :auto-grow="false"
           row-height="10"
-          v-model="searchQuery"
-          @keyup="searchStock"
           :rules="[rules.ticker]"
+          v-model="searchQuery"
+          @keyup="searchinsurance"
         ></v-textarea>
       </div>
     </div>
-    <div id="stock-div">
+    <div id="insurance-div">
       <v-row>
         <v-col
-          v-for="(stock, index) in updatedStockList"
-          :key="stock.ticker + index"
+          v-for="(insurance, index) in updatedinsuranceList"
+          :key="insurance.ticker + index"
           cols="12"
           md="4"
         >
           <v-card
-            class="stock-cards"
+            class="insurance-cards"
             max-width="344"
             outlined
             elevation="2"
@@ -51,7 +51,7 @@
             <v-list-item>
               <v-list-item-content>
                 <v-list-item-title class="text-h6 mb-1">
-                  <span class="text-h6">{{ stock.ticker }}</span>
+                  <span class="text-h6">{{ insurance.ticker }}</span>
                   <span
                     class="subtitle-2 text--secondary mt-n1 overline"
                     style="float: right"
@@ -67,30 +67,26 @@
                 </v-list-item-title>
                 <v-list-item-subtitle class="pt-5">
                   <v-row>
-                    <v-col cols="4" md="4">
-                      <p class="overline">QUANTITY</p>
-                      <p class="font-weight-bold">{{ stock.quantity }}</p>
-                    </v-col>
-                    <v-col cols="4" md="4">
-                      <p class="overline">DIVIDEND</p>
-                      <p class="font-weight-bold">{{ stock.dividend }}</p>
-                    </v-col>
-                    <v-col cols="4" md="4">
+                    <v-col cols="6" md="6">
                       <p class="overline">INVESTED</p>
-                      <p class="font-weight-bold">{{ stock.invested }}</p>
+                      <p class="font-weight-bold">{{ insurance.invested }}</p>
+                    </v-col>
+                    <v-col cols="6" md="6">
+                      <p class="overline">TYPE</p>
+                      <p class="font-weight-bold">{{ insurance.type }}</p>
                     </v-col>
                   </v-row>
                   <v-row>
                     <v-col cols="6" md="6">
-                      <p class="overline">AVG. BUY PRICE</p>
-                      <p class="font-weight-bold">{{ stock.avgBuyPrice }}</p>
+                      <p class="overline">Premium</p>
+                      <p class="font-weight-bold">{{ insurance.premium }}</p>
                     </v-col>
                     <v-col cols="6" md="6">
                       <p class="overline">Portfolio Wt.</p>
                       <span class="font-weight-bold">
                         {{
                           (
-                            (Number(stock.invested) * 100) /
+                            (Number(insurance.invested) * 100) /
                             Number(totalInvested)
                           ).toFixed(1)
                         }}
@@ -101,7 +97,8 @@
                         height="10"
                         :size="10"
                         :value="
-                          (Number(stock.invested) * 100) / Number(totalInvested)
+                          (Number(insurance.invested) * 100) /
+                          Number(totalInvested)
                         "
                         striped
                         rounded
@@ -146,21 +143,21 @@
         </v-col>
       </v-row>
     </div>
-    <stockDialog
+    <insuranceDialog
       :openDialog="openDialog"
-      :stockData="stockData"
-      @addStock="closeBox"
+      :insuranceData="insuranceData"
+      @addinsurance="closeBox"
     />
   </div>
-  <!-- use grid and card box modal also put option to add stocks-->
+  <!-- use grid and card box modal also put option to add insurances-->
 </template>
 
 <script>
 import gsap from "gsap";
-import stockDialog from "../components/stockDialog.vue";
+import insuranceDialog from "./insuranceDialog.vue";
 export default {
   components: {
-    stockDialog,
+    insuranceDialog,
   },
   data: () => ({
     openDialog: false,
@@ -171,88 +168,79 @@ export default {
     },
     totalInvested: 100000,
     searchQuery: null,
-    stockData: null,
-    updatedStockList: [],
-    stocks: [
+    insuranceData: null,
+    updatedinsuranceList: [],
+    insurances: [
       {
         ticker: "ITC",
-        quantity: 130,
-        dividend: 130,
         invested: 130,
-        avgBuyPrice: 130,
+        type: "Equity",
+        premium: "5.5",
       },
       {
-        ticker: "RIL",
-        quantity: 100,
-        dividend: 180,
+        ticker: "HAHA",
         invested: 130,
-        avgBuyPrice: 130,
+        type: "Equity",
+        premium: "5.5",
       },
       {
-        ticker: "IOC",
-        quantity: 130,
-        dividend: 130,
+        ticker: "ABC",
         invested: 130,
-        avgBuyPrice: 130,
+        type: "Equity",
+        premium: "5.5",
       },
       {
-        ticker: "NMDC",
-        quantity: 150,
-        dividend: 1230,
-        invested: 1390,
-        avgBuyPrice: 1030,
-      },
-      {
-        ticker: "HCLTECH",
-        quantity: 150,
-        dividend: 1230,
-        invested: 1390,
-        avgBuyPrice: 1030,
+        ticker: "ITC",
+        invested: 130,
+        type: "Equity",
+        premium: "5.5",
       },
     ],
   }),
   methods: {
     closeBox(payload) {
       if (payload !== null) {
-        this.updatedStockList = this.updatedStockList.filter((stock) => {
-          return stock.ticker !== payload.ticker;
+        this.updatedinsuranceList = this.updatedinsuranceList.filter(
+          (insurance) => {
+            return insurance.ticker !== payload.ticker;
+          }
+        );
+        this.updatedinsuranceList.unshift(payload);
+        this.insurances = this.insurances.filter((insurance) => {
+          return insurance.ticker !== payload.ticker;
         });
-        this.updatedStockList.unshift(payload);
-        this.stocks = this.stocks.filter((stock) => {
-          return stock.ticker !== payload.ticker;
-        });
-        this.stocks.unshift(payload);
+        this.insurances.unshift(payload);
       }
       this.openDialog = false;
     },
     openBox(option, index) {
       if (option === "add") {
         this.openDialog = true;
-        this.stockData = null;
+        this.insuranceData = null;
       } else if (option === "edit") {
-        this.stockData = this.updatedStockList[index];
+        this.insuranceData = this.updatedinsuranceList[index];
         this.openDialog = true;
       }
     },
-    searchStock() {
-      this.updatedStockList = this.stocks.filter((stock) => {
-        return stock.ticker
+    searchinsurance() {
+      this.updatedinsuranceList = this.insurances.filter((insurance) => {
+        return insurance.ticker
           .toLowerCase()
           .includes(this.searchQuery.toLowerCase());
       });
 
-      if (this.updatedStockList.length === 0) {
-        this.updatedStockList = this.stocks;
+      if (this.updatedinsuranceList.length === 0) {
+        this.updatedinsuranceList = this.insurances;
       }
     },
   },
   mounted() {
-    this.updatedStockList = this.stocks;
+    this.updatedinsuranceList = this.insurances;
 
     let tl = gsap.timeline();
 
     tl.fromTo(
-      "#stock-add-button",
+      "#insurance-add-button",
       {
         duration: 1,
         scale: 0,
@@ -266,14 +254,14 @@ export default {
   updated() {
     let tl = gsap.timeline();
     tl.fromTo(
-      ".stock-cards",
+      ".insurance-cards",
       {
         duration: 1,
         opacity: 0,
         ease: "power3.inOut",
-        scale:1.06
+        scale: 1.06,
       },
-      { duration: 1, scale:1, opacity: 1, ease: "power3.inOut", stagger: 0.1 }
+      { duration: 1, scale: 1, opacity: 1, ease: "power3.inOut", stagger: 0.1 }
     );
   },
 };
@@ -284,44 +272,44 @@ export default {
   margin: 1rem;
 }
 
-#stock-div {
+#insurance-div {
   margin-top: 50px;
   margin-left: 16px;
 }
-#stock-search-box {
+#insurance-search-box {
   width: 320px;
   float: right;
   margin-top: -40px;
   margin-right: 30px;
 }
-#stock-add-button {
+#insurance-add-button {
   float: right;
   margin-right: 90px;
   margin-top: -30px;
 }
 
 @media (max-width: 420px) {
-  #stock-div {
+  #insurance-div {
     width: 330px;
     margin-left: 12px;
   }
-  #stock-search-box {
-    width: 200px;
+  #insurance-search-box {
+    width: 180px;
     margin-top: -40px;
     margin-right: 10px;
   }
-  #stock-add-button {
+  #insurance-add-button {
     margin-right: -10px;
     margin-top: -30px;
   }
 }
 
 @media (max-width: 370px) {
-  #stock-div {
+  #insurance-div {
     width: 288px;
     margin-left: 9px;
   }
-  #stock-search-box {
+  #insurance-search-box {
     width: 150px;
     margin-top: -40px;
     margin-right: 10px;
