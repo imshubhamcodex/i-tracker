@@ -138,6 +138,7 @@
                 small
                 color="red"
                 style="float: right; zoom: 0.8"
+                @click="deleteStock(stock)"
               >
                 <v-icon dark> mdi-delete </v-icon>
               </v-btn>
@@ -176,6 +177,12 @@ export default {
     stocks: [],
   }),
   methods: {
+    deleteStock(payload) {
+      this.$store.commit("deleteStock", payload);
+      this.calcTotalInv();
+      this.updatedStockList = this.$store.state.stocks;
+      this.stocks = this.$store.state.stocks;
+    },
     closeBox(payload) {
       if (payload !== null) {
         // this.updatedStockList = this.updatedStockList.filter((stock) => {

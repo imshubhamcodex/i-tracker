@@ -31,7 +31,7 @@
           </div>
           <div>
             <p class="ml-4 text-button">Wallet amount</p>
-            <h2 class="mt-n5 ml-4 text-subtitle-2">₹ {{ wallet_money }}</h2>
+            <h2 class="mt-n5 ml-4 text-subtitle-2">₹ {{ this.$store.state.walletMoney }}</h2>
           </div>
         </div>
       </v-col>
@@ -152,11 +152,9 @@ export default {
       this.openDialog = true;
     },
     closeBox(money) {
-      console.log(money);
       this.openDialog = false;
-
       if (money != null) {
-        this.wallet_money = money;
+        this.$store.commit("updateWalletMoney", money);
       }
     },
     chooseColor(num, type) {

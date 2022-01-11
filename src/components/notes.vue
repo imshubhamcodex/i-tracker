@@ -102,6 +102,7 @@
                 small
                 color="red"
                 style="float: right; zoom: 0.8"
+                @click="deleteNote(note)"
               >
                 <v-icon dark> mdi-delete </v-icon>
               </v-btn>
@@ -139,16 +140,24 @@ export default {
     notes: [],
   }),
   methods: {
+    deleteNote(payload) {
+      this.$store.commit("deleteNote", payload);
+      this.notes = this.$store.state.notes;
+      this.updatednoteList = this.notes;
+    },
     closeBox(payload) {
       if (payload !== null) {
-        this.updatednoteList = this.updatednoteList.filter((note) => {
-          return note.title !== payload.title;
-        });
-        this.updatednoteList.unshift(payload);
-        this.notes = this.notes.filter((note) => {
-          return note.title !== payload.title;
-        });
-        this.notes.unshift(payload);
+        // this.updatednoteList = this.updatednoteList.filter((note) => {
+        //   return note.title !== payload.title;
+        // });
+        // this.updatednoteList.unshift(payload);
+        // this.notes = this.notes.filter((note) => {
+        //   return note.title !== payload.title;
+        // });
+        // this.notes.unshift(payload);
+        this.$store.commit("addNotes", payload);
+        this.notes = this.$store.state.notes;
+        this.updatednoteList = this.notes;
       }
       this.openDialog = false;
     },

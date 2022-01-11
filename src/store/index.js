@@ -75,23 +75,23 @@ export default new Vuex.Store({
     investedTrend: [
       {
         amount: 1000,
-        date: "1/9/2022",
+        date: "1/6/2022",
       },
       {
         amount: 200,
-        date: "1/10/2022",
+        date: "1/7/2022",
       },
       {
         amount: 2000,
-        date: "1/11/2022",
+        date: "1/8/2022",
       },
       {
         amount: 1000,
-        date: "1/12/2022",
+        date: "1/9/2022",
       },
       {
         amount: 500,
-        date: "1/13/2022",
+        date: "1/10/2022",
       },
     ],
 
@@ -99,6 +99,16 @@ export default new Vuex.Store({
   },
   mutations: {
     addStocks(state, payload) {
+      let old_item = state.stocks.filter((stock) => {
+        return stock.ticker === payload.ticker;
+      });
+
+      let amount_deducted = 0;
+
+      if (old_item.length !== 0) {
+        amount_deducted = Number(old_item[0].invested);
+      }
+
       state.stocks = state.stocks.filter((stock) => {
         return stock.ticker !== payload.ticker;
       });
@@ -109,19 +119,30 @@ export default new Vuex.Store({
       let date_found = false;
       state.investedTrend.forEach((trend) => {
         if (trend.date === payload.date) {
-          trend.amount = Number(payload.invested) + Number(trend.amount);
+          trend.amount =
+            Number(payload.invested) + Number(trend.amount) - amount_deducted;
           date_found = true;
         }
       });
       if (!date_found) {
         state.investedTrend.push({
-          amount: Number(payload.invested),
+          amount: Number(payload.invested) - amount_deducted,
           date: payload.date,
         });
       }
     },
 
     addCryptos(state, payload) {
+      let old_item = state.cryptos.filter((crypto) => {
+        return crypto.ticker === payload.ticker;
+      });
+
+      let amount_deducted = 0;
+
+      if (old_item.length !== 0) {
+        amount_deducted = Number(old_item[0].invested);
+      }
+
       state.cryptos = state.cryptos.filter((crypto) => {
         return crypto.ticker !== payload.ticker;
       });
@@ -135,19 +156,33 @@ export default new Vuex.Store({
           trend.amount =
             Number(payload.invested) +
             Number(payload.fixedDeposit) +
-            Number(trend.amount);
+            Number(trend.amount) -
+            amount_deducted;
           date_found = true;
         }
       });
       if (!date_found) {
         state.investedTrend.push({
-          amount: Number(payload.invested) + Number(payload.fixedDeposit),
+          amount:
+            Number(payload.invested) +
+            Number(payload.fixedDeposit) -
+            amount_deducted,
           date: payload.date,
         });
       }
     },
 
     addInsurances(state, payload) {
+      let old_item = state.insurances.filter((insurance) => {
+        return insurance.ticker === payload.ticker;
+      });
+
+      let amount_deducted = 0;
+
+      if (old_item.length !== 0) {
+        amount_deducted = Number(old_item[0].invested);
+      }
+
       state.insurances = state.insurances.filter((insurance) => {
         return insurance.ticker !== payload.ticker;
       });
@@ -158,16 +193,54 @@ export default new Vuex.Store({
       let date_found = false;
       state.investedTrend.forEach((trend) => {
         if (trend.date === payload.date) {
-          trend.amount = Number(payload.invested) + Number(trend.amount);
+          trend.amount =
+            Number(payload.invested) + Number(trend.amount) - amount_deducted;
           date_found = true;
         }
       });
       if (!date_found) {
         state.investedTrend.push({
-          amount: Number(payload.invested),
+          amount: Number(payload.invested) - amount_deducted,
           date: payload.date,
         });
       }
+    },
+
+    addNotes(state, payload) {
+      state.notes = state.notes.filter((note) => {
+        return note.title !== payload.title;
+      });
+      state.notes.unshift(payload);
+    },
+
+    updateWalletMoney(state, payload) {
+      state.walletMoney = payload;
+    },
+
+    // Delete section
+
+    deleteStock(state, payload) {
+      state.stocks = state.stocks.filter((stock) => {
+        return stock.ticker !== payload.ticker;
+      });
+    },
+
+    deleteCrypto(state, payload) {
+      state.cryptos = state.cryptos.filter((crypto) => {
+        return crypto.ticker !== payload.ticker;
+      });
+    },
+
+    deleteInsurance(state, payload) {
+      state.insurances = state.insurances.filter((insurance) => {
+        return insurance.ticker !== payload.ticker;
+      });
+    },
+
+    deleteNote(state, payload) {
+      state.notes = state.notes.filter((note) => {
+        return note.title !== payload.title;
+      });
     },
   },
 });

@@ -138,6 +138,7 @@
                 small
                 color="red"
                 style="float: right; zoom: 0.8"
+                @click="deleteCrypto(crypto)"
               >
                 <v-icon dark> mdi-delete </v-icon>
               </v-btn>
@@ -176,6 +177,12 @@ export default {
     cryptos: [],
   }),
   methods: {
+    deleteCrypto(payload) {
+      this.$store.commit("deleteCrypto", payload);
+      this.calcTotalInv();
+      this.updatedcryptoList = this.$store.state.cryptos;
+      this.cryptos = this.$store.state.cryptos;
+    },
     closeBox(payload) {
       if (payload !== null) {
         // this.updatedcryptoList = this.updatedcryptoList.filter((crypto) => {

@@ -133,6 +133,7 @@
                 small
                 color="red"
                 style="float: right; zoom: 0.8"
+                @click="deleteInsurance(insurance)"
               >
                 <v-icon dark> mdi-delete </v-icon>
               </v-btn>
@@ -171,6 +172,12 @@ export default {
     insurances: [],
   }),
   methods: {
+    deleteInsurance(payload) {
+      this.$store.commit("deleteInsurance", payload);
+      this.calcTotalInv();
+      this.updatedinsuranceList = this.$store.state.insurances;
+      this.stocks = this.$store.state.insurances;
+    },
     closeBox(payload) {
       if (payload !== null) {
         // this.updatedinsuranceList = this.updatedinsuranceList.filter(
