@@ -35,7 +35,7 @@
                   outlined
                   row-height="15"
                   v-model="quantity"
-                  :rules="[rules.number, rules.length(1), rules.required]"
+                  :rules="[rules.number, rules.required]"
                 ></v-textarea>
               </v-col>
               <v-col cols="12" sm="6" md="6">
@@ -49,7 +49,7 @@
                   outlined
                   row-height="15"
                   v-model="dividend"
-                  :rules="[rules.number, rules.length(1), rules.required]"
+                  :rules="[rules.number, rules.required]"
                 ></v-textarea>
               </v-col>
               <v-col cols="12" sm="6" md="6">
@@ -63,7 +63,7 @@
                   outlined
                   row-height="15"
                   v-model="invested"
-                  :rules="[rules.number, rules.length(1), rules.required]"
+                  :rules="[rules.number, rules.required]"
                 ></v-textarea>
               </v-col>
               <v-col cols="12" sm="6" md="6">
@@ -77,7 +77,7 @@
                   outlined
                   row-height="15"
                   v-model="avgBuyPrice"
-                  :rules="[rules.number, rules.length(1), rules.required]"
+                  :rules="[rules.number, rules.required]"
                 ></v-textarea>
               </v-col>
             </v-row>
@@ -114,7 +114,8 @@ export default {
       length: (len) => (v) =>
         (v || "").length >= len || `Invalid character length, required ${len}`,
       number: (v) =>
-        !!(v || "").match(/^[0-9.]*$/) || "Please enter a valid input",
+        !!(v || "").toString().match(/^[0-9.]*$/) ||
+        "Please enter a valid input",
       required: (v) => !!v || "This field is required",
     },
   }),
@@ -136,10 +137,10 @@ export default {
         ) {
           if (
             this.ticker.match(/^[ A-Za-z_@./#&]*$/) &&
-            this.quantity.match(/^[0-9.]*$/) &&
-            this.invested.match(/^[0-9.]*$/) &&
-            this.dividend.match(/^[0-9.]*$/) &&
-            this.avgBuyPrice.match(/^[0-9.]*$/)
+            this.quantity.toString().match(/^[0-9.]*$/) &&
+            this.invested.toString().match(/^[0-9.]*$/) &&
+            this.dividend.toString().match(/^[0-9.]*$/) &&
+            this.avgBuyPrice.toString().match(/^[0-9.]*$/)
           ) {
             this.$emit("addStock", {
               ticker: this.ticker,

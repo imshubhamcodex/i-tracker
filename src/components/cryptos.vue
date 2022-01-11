@@ -60,9 +60,7 @@
                       small
                       style="zoom: 0.5; margin-right: 10px"
                       >mdi-checkbox-blank-circle </v-icon
-                    >{{
-                      new Date().toLocaleDateString().replaceAll("/", "-")
-                    }}</span
+                    >{{ crypto.date }}</span
                   >
                 </v-list-item-title>
                 <v-list-item-subtitle class="pt-5">
@@ -87,7 +85,9 @@
                       <span class="font-weight-bold">
                         {{
                           (
-                            (Number(crypto.invested) * 100) /
+                            ((Number(crypto.invested) +
+                              Number(crypto.fixedDeposit)) *
+                              100) /
                             Number(totalInvested)
                           ).toFixed(1)
                         }}
@@ -98,7 +98,9 @@
                         height="10"
                         :size="10"
                         :value="
-                          (Number(crypto.invested) * 100) /
+                          ((Number(crypto.invested) +
+                            Number(crypto.fixedDeposit)) *
+                            100) /
                           Number(totalInvested)
                         "
                         striped
@@ -167,54 +169,28 @@ export default {
         !!(v || "").match(/^[ A-Za-z_@./#&]*$/) ||
         "Please enter a valid ticker",
     },
-    totalInvested: 100000,
+    totalInvested: 0,
     searchQuery: null,
     cryptoData: null,
     updatedcryptoList: [],
-    cryptos: [
-      {
-        ticker: "BTC",
-        apr: 130,
-        invested: 130,
-        fixedDeposit: 0,
-      },
-      {
-        ticker: "BTC",
-        apr: 130,
-        invested: 130,
-        fixedDeposit: 0,
-      },
-      {
-        ticker: "BTC",
-        apr: 130,
-        invested: 130,
-        fixedDeposit: 0,
-      },
-      {
-        ticker: "BTC",
-        apr: 130,
-        invested: 130,
-        fixedDeposit: 0,
-      },
-      {
-        ticker: "BTC",
-        apr: 130,
-        invested: 130,
-        fixedDeposit: 0,
-      },
-    ],
+    cryptos: [],
   }),
   methods: {
     closeBox(payload) {
       if (payload !== null) {
-        this.updatedcryptoList = this.updatedcryptoList.filter((crypto) => {
-          return crypto.ticker !== payload.ticker;
-        });
-        this.updatedcryptoList.unshift(payload);
-        this.cryptos = this.cryptos.filter((crypto) => {
-          return crypto.ticker !== payload.ticker;
-        });
-        this.cryptos.unshift(payload);
+        // this.updatedcryptoList = this.updatedcryptoList.filter((crypto) => {
+        //   return crypto.ticker !== payload.ticker;
+        // });
+        // this.updatedcryptoList.unshift(payload);
+        // this.cryptos = this.cryptos.filter((crypto) => {
+        //   return crypto.ticker !== payload.ticker;
+        // });
+        // this.cryptos.unshift(payload);
+
+        this.$store.commit("addCryptos", payload);
+        this.calcTotalInv();
+        this.updatedcryptoList = this.$store.state.cryptos;
+        this.cryptos = this.$store.state.cryptos;
       }
       this.openDialog = false;
     },
@@ -238,9 +214,23 @@ export default {
         this.updatedcryptoList = this.cryptos;
       }
     },
+
+    calcTotalInv() {
+      this.totalInvested = 0;
+      this.$store.state.cryptos.forEach((crypto) => {
+        this.totalInvested +=
+          Number(crypto.invested) + Number(crypto.fixedDeposit);
+      });
+    },
   },
   mounted() {
+    this.cryptos = this.$store.state.cryptos;
     this.updatedcryptoList = this.cryptos;
+
+    this.cryptos.forEach((crypto) => {
+      this.totalInvested +=
+        Number(crypto.invested) + Number(crypto.fixedDeposit);
+    });
 
     let tl = gsap.timeline();
 
@@ -312,7 +302,7 @@ export default {
 @media (max-width: 370px) {
   #crypto-div {
     width: 288px;
-    margin-left: 9px;
+    margin-left: 6px;
   }
   #crypto-search-box {
     width: 150px;

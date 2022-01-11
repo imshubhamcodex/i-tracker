@@ -60,9 +60,7 @@
                       small
                       style="zoom: 0.5; margin-right: 10px"
                       >mdi-checkbox-blank-circle </v-icon
-                    >{{
-                      new Date().toLocaleDateString().replaceAll("/", "-")
-                    }}</span
+                    >{{ insurance.date }}</span
                   >
                 </v-list-item-title>
                 <v-list-item-subtitle class="pt-5">
@@ -166,50 +164,30 @@ export default {
         !!(v || "").match(/^[ A-Za-z_@./#&]*$/) ||
         "Please enter a valid ticker",
     },
-    totalInvested: 100000,
+    totalInvested: 0,
     searchQuery: null,
     insuranceData: null,
     updatedinsuranceList: [],
-    insurances: [
-      {
-        ticker: "ITC",
-        invested: 130,
-        type: "Equity",
-        premium: "5.5",
-      },
-      {
-        ticker: "HAHA",
-        invested: 130,
-        type: "Equity",
-        premium: "5.5",
-      },
-      {
-        ticker: "ABC",
-        invested: 130,
-        type: "Equity",
-        premium: "5.5",
-      },
-      {
-        ticker: "ITC",
-        invested: 130,
-        type: "Equity",
-        premium: "5.5",
-      },
-    ],
+    insurances: [],
   }),
   methods: {
     closeBox(payload) {
       if (payload !== null) {
-        this.updatedinsuranceList = this.updatedinsuranceList.filter(
-          (insurance) => {
-            return insurance.ticker !== payload.ticker;
-          }
-        );
-        this.updatedinsuranceList.unshift(payload);
-        this.insurances = this.insurances.filter((insurance) => {
-          return insurance.ticker !== payload.ticker;
-        });
-        this.insurances.unshift(payload);
+        // this.updatedinsuranceList = this.updatedinsuranceList.filter(
+        //   (insurance) => {
+        //     return insurance.ticker !== payload.ticker;
+        //   }
+        // );
+        // this.updatedinsuranceList.unshift(payload);
+        // this.insurances = this.insurances.filter((insurance) => {
+        //   return insurance.ticker !== payload.ticker;
+        // });
+        // this.insurances.unshift(payload);
+
+        this.$store.commit("addInsurances", payload);
+        this.calcTotalInv();
+        this.updatedinsuranceList = this.$store.state.insurances;
+        this.stocks = this.$store.state.insurances;
       }
       this.openDialog = false;
     },
@@ -233,9 +211,20 @@ export default {
         this.updatedinsuranceList = this.insurances;
       }
     },
+    calcTotalInv() {
+      this.totalInvested = 0;
+      this.$store.state.insurances.forEach((insurance) => {
+        this.totalInvested += Number(insurance.invested);
+      });
+    },
   },
   mounted() {
+    this.insurances = this.$store.state.insurances;
     this.updatedinsuranceList = this.insurances;
+
+    this.insurances.forEach((insurance) => {
+      this.totalInvested += Number(insurance.invested);
+    });
 
     let tl = gsap.timeline();
 
@@ -307,12 +296,12 @@ export default {
 @media (max-width: 370px) {
   #insurance-div {
     width: 288px;
-    margin-left: 9px;
+    margin-left: 6px;
   }
   #insurance-search-box {
-    width: 150px;
+    width: 130px;
     margin-top: -40px;
-    margin-right: 10px;
+    margin-right: 0px;
   }
 }
 </style>

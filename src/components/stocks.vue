@@ -169,59 +169,28 @@ export default {
         !!(v || "").match(/^[ A-Za-z_@./#&]*$/) ||
         "Please enter a valid ticker",
     },
-    totalInvested: 100000,
+    totalInvested: 0,
     searchQuery: null,
     stockData: null,
     updatedStockList: [],
-    stocks: [
-      {
-        ticker: "ITC",
-        quantity: 130,
-        dividend: 130,
-        invested: 130,
-        avgBuyPrice: 130,
-      },
-      {
-        ticker: "RIL",
-        quantity: 100,
-        dividend: 180,
-        invested: 130,
-        avgBuyPrice: 130,
-      },
-      {
-        ticker: "IOC",
-        quantity: 130,
-        dividend: 130,
-        invested: 130,
-        avgBuyPrice: 130,
-      },
-      {
-        ticker: "NMDC",
-        quantity: 150,
-        dividend: 1230,
-        invested: 1390,
-        avgBuyPrice: 1030,
-      },
-      {
-        ticker: "HCLTECH",
-        quantity: 150,
-        dividend: 1230,
-        invested: 1390,
-        avgBuyPrice: 1030,
-      },
-    ],
+    stocks: [],
   }),
   methods: {
     closeBox(payload) {
       if (payload !== null) {
-        this.updatedStockList = this.updatedStockList.filter((stock) => {
-          return stock.ticker !== payload.ticker;
-        });
-        this.updatedStockList.unshift(payload);
-        this.stocks = this.stocks.filter((stock) => {
-          return stock.ticker !== payload.ticker;
-        });
-        this.stocks.unshift(payload);
+        // this.updatedStockList = this.updatedStockList.filter((stock) => {
+        //   return stock.ticker !== payload.ticker;
+        // });
+        // this.updatedStockList.unshift(payload);
+        // this.stocks = this.stocks.filter((stock) => {
+        //   return stock.ticker !== payload.ticker;
+        // });
+        // this.stocks.unshift(payload);
+
+        this.$store.commit("addStocks", payload);
+        this.calcTotalInv();
+        this.updatedStockList = this.$store.state.stocks;
+        this.stocks = this.$store.state.stocks;
       }
       this.openDialog = false;
     },
@@ -245,9 +214,17 @@ export default {
         this.updatedStockList = this.stocks;
       }
     },
+    calcTotalInv() {
+      this.totalInvested = 0;
+      this.$store.state.stocks.forEach((stock) => {
+        this.totalInvested += Number(stock.invested);
+      });
+    },
   },
   mounted() {
+    this.stocks = this.$store.state.stocks;
     this.updatedStockList = this.stocks;
+    this.calcTotalInv();
 
     let tl = gsap.timeline();
 
@@ -271,9 +248,9 @@ export default {
         duration: 1,
         opacity: 0,
         ease: "power3.inOut",
-        scale:1.06
+        scale: 1.06,
       },
-      { duration: 1, scale:1, opacity: 1, ease: "power3.inOut", stagger: 0.1 }
+      { duration: 1, scale: 1, opacity: 1, ease: "power3.inOut", stagger: 0.1 }
     );
   },
 };
@@ -319,7 +296,7 @@ export default {
 @media (max-width: 370px) {
   #stock-div {
     width: 288px;
-    margin-left: 9px;
+    margin-left: 6px;
   }
   #stock-search-box {
     width: 150px;

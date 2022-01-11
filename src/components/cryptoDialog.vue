@@ -35,7 +35,7 @@
                   outlined
                   row-height="15"
                   v-model="apr"
-                  :rules="[rules.number, rules.length(1), rules.required]"
+                  :rules="[rules.number, rules.required]"
                 ></v-textarea>
               </v-col>
               <v-col cols="12" sm="6" md="6">
@@ -49,7 +49,7 @@
                   outlined
                   row-height="15"
                   v-model="invested"
-                  :rules="[rules.number, rules.length(1), rules.required]"
+                  :rules="[rules.number, rules.required]"
                 ></v-textarea>
               </v-col>
               <v-col cols="12" sm="6" md="6">
@@ -63,7 +63,7 @@
                   outlined
                   row-height="15"
                   v-model="fixedDeposit"
-                  :rules="[rules.number, rules.length(1), rules.required]"
+                  :rules="[rules.number, rules.required]"
                 ></v-textarea>
               </v-col>
             </v-row>
@@ -99,7 +99,8 @@ export default {
       length: (len) => (v) =>
         (v || "").length >= len || `Invalid character length, required ${len}`,
       number: (v) =>
-        !!(v || "").match(/^[0-9.]*$/) || "Please enter a valid input",
+        !!(v || "").toString().match(/^[0-9.]*$/) ||
+        "Please enter a valid input",
       required: (v) => !!v || "This field is required",
     },
   }),
@@ -120,15 +121,15 @@ export default {
         ) {
           if (
             this.ticker.match(/^[ A-Za-z_@./#&]*$/) &&
-            this.apr.match(/^[0-9.]*$/) &&
-            this.fixedDeposit.match(/^[0-9.]*$/) &&
-            this.invested.match(/^[0-9.]*$/)
+            this.apr.toString().match(/^[0-9.]*$/) &&
+            this.fixedDeposit.toString().match(/^[0-9.]*$/) &&
+            this.invested.toString().match(/^[0-9.]*$/)
           ) {
             this.$emit("addcrypto", {
               ticker: this.ticker,
-              apr: this.apr,
-              fixedDeposit: this.fixedDeposit,
-              invested: this.invested,
+              apr: Number(this.apr),
+              fixedDeposit: Number(this.fixedDeposit),
+              invested: Number(this.invested),
             });
           }
         }
@@ -144,7 +145,7 @@ export default {
       if (this.cryptoData !== null) {
         this.ticker = this.cryptoData.ticker;
         this.apr = this.cryptoData.apr;
-        this.fixedDiposit = this.cryptoData.fixedDiposit;
+        this.fixedDeposit = this.cryptoData.fixedDeposit;
         this.invested = this.cryptoData.invested;
       } else {
         this.ticker = null;

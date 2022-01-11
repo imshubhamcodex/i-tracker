@@ -40,7 +40,7 @@
               </v-col>
               <v-col cols="12" sm="6" md="6">
                 <v-textarea
-                  append-icon="mdi-percent-outline"
+                  append-icon="mdi-currency-inr"
                   class="mx-2"
                   rows="1"
                   label="PREMIUM*"
@@ -49,7 +49,7 @@
                   outlined
                   row-height="15"
                   v-model="premium"
-                  :rules="[rules.length(1), rules.required, rules.number]"
+                  :rules="[rules.required, rules.number]"
                 ></v-textarea>
               </v-col>
               <v-col cols="12" sm="6" md="6">
@@ -63,7 +63,7 @@
                   outlined
                   row-height="15"
                   v-model="invested"
-                  :rules="[rules.length(2), rules.required, rules.number]"
+                  :rules="[rules.required, rules.number]"
                 ></v-textarea>
               </v-col>
             </v-row>
@@ -99,7 +99,8 @@ export default {
       length: (len) => (v) =>
         (v || "").length >= len || `Invalid character length, required ${len}`,
       number: (v) =>
-        !!(v || "").match(/^[0-9.]*$/) || "Please enter a valid input",
+        !!(v || "").toString().match(/^[0-9.]*$/) ||
+        "Please enter a valid input",
       required: (v) => !!v || "This field is required",
     },
   }),
@@ -121,8 +122,8 @@ export default {
           if (
             this.ticker.match(/^[ A-Za-z_@./#&]*$/) &&
             this.type.match(/^[ A-Za-z_@./#&]*$/) &&
-            this.premium.match(/^[0-9.]*$/) &&
-            this.invested.match(/^[0-9.]*$/)
+            this.premium.toString().match(/^[0-9.]*$/) &&
+            this.invested.toString().match(/^[0-9.]*$/)
           ) {
             console.log("saving");
             this.$emit("addinsurance", {

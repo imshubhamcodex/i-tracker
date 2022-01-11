@@ -68,22 +68,28 @@
         </v-navigation-drawer>
       </v-card>
     </template>
-    <v-main style="width: 100%">
+    <v-main id="main-div" style="width: 100%">
+      <overview v-if="overview" id="overview-comp" class="mt-4 pb-6" />
       <stocks v-if="stocks" id="stock-comp" class="mt-4 pb-6" />
       <cryptos v-if="cryptos" id="crypto-comp" class="mt-4 pb-6" />
       <insurances v-if="insurances" id="insurances-comp" class="mt-4 pb-6" />
+      <notes v-if="notes" id="notes-comp" class="mt-4 pb-6" />
     </v-main>
   </v-app>
 </template>
 <script>
+import overview from "../components/overview.vue";
 import stocks from "../components/stocks.vue";
 import cryptos from "../components/cryptos.vue";
 import insurances from "../components/insurances.vue";
+import notes from "../components/notes.vue";
 export default {
   components: {
     stocks,
     cryptos,
     insurances,
+    overview,
+    notes,
   },
   data() {
     return {
@@ -92,6 +98,7 @@ export default {
       stocks: false,
       cryptos: false,
       insurances: false,
+      notes: false,
       items: [
         { title: "OVERVIEW", icon: "mdi-chart-pie" },
         { title: "STOCKS", icon: "mdi-briefcase" },
@@ -104,26 +111,37 @@ export default {
   },
   methods: {
     openSection(section) {
+      this.mini = true;
       if (section === "OVERVIEW") {
         this.overview = true;
         this.stocks = false;
         this.cryptos = false;
         this.insurances = false;
+        this.notes = false;
       } else if (section === "STOCKS") {
         this.overview = false;
         this.stocks = true;
         this.cryptos = false;
         this.insurances = false;
+        this.notes = false;
       } else if (section === "CRYPTO") {
         this.overview = false;
         this.stocks = false;
         this.cryptos = true;
         this.insurances = false;
+        this.notes = false;
       } else if (section === "INSURANCE") {
         this.overview = false;
         this.stocks = false;
         this.cryptos = false;
         this.insurances = true;
+        this.notes = false;
+      } else if (section === "NOTES") {
+        this.overview = false;
+        this.stocks = false;
+        this.cryptos = false;
+        this.insurances = false;
+        this.notes = true;
       }
     },
   },
@@ -138,14 +156,18 @@ export default {
 }
 #stock-comp,
 #crypto-comp,
-#insurances-comp {
+#insurances-comp,
+#overview-comp,
+#notes-comp {
   width: 100vw;
 }
 
 @media (max-width: 992px) {
   #stock-comp,
   #crypto-comp,
-  #insurances-comp {
+  #insurances-comp,
+  #overview-comp,
+  #notes-comp {
     width: 80vw;
   }
 }
