@@ -77,7 +77,7 @@ export default {
         document.getElementById("toggle-circle").click();
       }, 200);
       setTimeout(() => {
-        this.$router.push("/test");
+        this.$router.push("/dashboard");
       }, 600);
     },
   },
