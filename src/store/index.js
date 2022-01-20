@@ -1,101 +1,19 @@
 import Vue from "vue";
 import Vuex from "vuex";
-
+import { db } from "../firebase.js";
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    notes: [
-      {
-        id: 1,
-        title: "note1",
-        body: "note1 content",
-        source: "abc.com",
-        date: "1/11/2022",
-      },
-      {
-        id: 2,
-        title: "note2",
-        body: "note1 content",
-        source: "def.com",
-        date: "1/11/2022",
-      },
-    ],
-    insurances: [
-      {
-        ticker: "Medi",
-        invested: 1000,
-        type: "Health",
-        premium: 100,
-        date: "1/11/2022",
-      },
-      {
-        ticker: "Auto",
-        invested: 1100,
-        type: "Car",
-        premium: 110,
-        date: "1/11/2022",
-      },
-    ],
-    cryptos: [
-      {
-        ticker: "BTC",
-        apr: 130,
-        invested: 50,
-        fixedDeposit: 200,
-        date: "1/11/2022",
-      },
-      {
-        ticker: "ETH",
-        apr: 130,
-        invested: 100,
-        fixedDeposit: 200,
-        date: "1/11/2022",
-      },
-    ],
+    notes: [],
+    insurances: [],
+    cryptos: [],
 
-    stocks: [
-      {
-        ticker: "NMDC",
-        quantity: 150,
-        dividend: 1230,
-        invested: 300,
-        avgBuyPrice: 1030,
-        date: "1/11/2022",
-      },
-      {
-        ticker: "HCLTECH",
-        quantity: 150,
-        dividend: 1230,
-        invested: 1000,
-        avgBuyPrice: 1030,
-        date: "1/11/2022",
-      },
-    ],
-    investedTrend: [
-      {
-        amount: 1000,
-        date: "1/6/2022",
-      },
-      {
-        amount: 200,
-        date: "1/7/2022",
-      },
-      {
-        amount: 2000,
-        date: "1/8/2022",
-      },
-      {
-        amount: 1000,
-        date: "1/9/2022",
-      },
-      {
-        amount: 500,
-        date: "1/10/2022",
-      },
-    ],
+    stocks: [],
+    investedTrend: [],
 
-    walletMoney: 1000,
+    walletMoney: 0,
+    targetMoney: 0,
   },
   mutations: {
     addStocks(state, payload) {
@@ -130,6 +48,15 @@ export default new Vuex.Store({
           date: payload.date,
         });
       }
+
+      // upload to firebase
+      const stocks = state.stocks;
+      db.collection("stocks").doc("stocks_info").set(
+        {
+          stocks,
+        },
+        { merge: true }
+      );
     },
 
     addCryptos(state, payload) {
@@ -170,6 +97,15 @@ export default new Vuex.Store({
           date: payload.date,
         });
       }
+
+      // upload to firebase
+      const cryptos = state.cryptos;
+      db.collection("cryptos").doc("cryptos_info").set(
+        {
+          cryptos,
+        },
+        { merge: true }
+      );
     },
 
     addInsurances(state, payload) {
@@ -204,6 +140,15 @@ export default new Vuex.Store({
           date: payload.date,
         });
       }
+
+      // upload to firebase
+      const insurances = state.insurances;
+      db.collection("insurances").doc("insurances_info").set(
+        {
+          insurances,
+        },
+        { merge: true }
+      );
     },
 
     addNotes(state, payload) {
@@ -211,10 +156,26 @@ export default new Vuex.Store({
         return note.title !== payload.title;
       });
       state.notes.unshift(payload);
+
+      // upload to firebase
+      const notes = state.notes;
+      db.collection("notes").doc("notes_info").set(
+        {
+          notes,
+        },
+        { merge: true }
+      );
     },
 
     updateWalletMoney(state, payload) {
       state.walletMoney = payload;
+      const walletMoney = state.walletMoney;
+      db.collection("walletMoney").doc("walletMoney_info").set(
+        {
+          walletMoney,
+        },
+        { merge: true }
+      );
     },
 
     // Delete section
@@ -223,24 +184,99 @@ export default new Vuex.Store({
       state.stocks = state.stocks.filter((stock) => {
         return stock.ticker !== payload.ticker;
       });
+
+      // upload to firebase
+      const stocks = state.stocks;
+      db.collection("stocks").doc("stocks_info").set(
+        {
+          stocks,
+        },
+        { merge: true }
+      );
     },
 
     deleteCrypto(state, payload) {
       state.cryptos = state.cryptos.filter((crypto) => {
         return crypto.ticker !== payload.ticker;
       });
+
+      // upload to firebase
+      const cryptos = state.cryptos;
+      db.collection("cryptos").doc("cryptos_info").set(
+        {
+          cryptos,
+        },
+        { merge: true }
+      );
     },
 
     deleteInsurance(state, payload) {
       state.insurances = state.insurances.filter((insurance) => {
         return insurance.ticker !== payload.ticker;
       });
+
+      // upload to firebase
+      const insurances = state.insurances;
+      db.collection("insurances").doc("insurances_info").set(
+        {
+          insurances,
+        },
+        { merge: true }
+      );
     },
 
     deleteNote(state, payload) {
       state.notes = state.notes.filter((note) => {
         return note.title !== payload.title;
       });
+
+      // upload to firebase
+      const notes = state.notes;
+      db.collection("notes").doc("notes_info").set(
+        {
+          notes,
+        },
+        { merge: true }
+      );
+    },
+
+    updateTargetMoney(state, payload) {
+      state.targetMoney = Number(payload.money_target);
+
+      // upload to firebase
+      const targetMoney = state.targetMoney;
+      db.collection("targetMoney").doc("targetMoney_info").set(
+        {
+          targetMoney,
+        },
+        { merge: true }
+      );
+    },
+
+    // Set section
+
+    setStocks(state, payload) {
+      state.stocks = payload;
+    },
+
+    setCryptos(state, payload) {
+      state.cryptos = payload;
+    },
+
+    setInsurances(state, payload) {
+      state.insurances = payload;
+    },
+
+    setNotes(state, payload) {
+      state.notes = payload;
+    },
+
+    setWalletMoney(state, payload) {
+      state.walletMoney = payload;
+    },
+
+    setTargetMoney(state, payload) {
+      state.targetMoney = payload;
     },
   },
 });

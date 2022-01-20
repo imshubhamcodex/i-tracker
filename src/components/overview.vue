@@ -126,7 +126,6 @@ export default {
         "purple",
         "orange",
         "pink",
-        "black",
       ],
     };
   },
@@ -141,6 +140,7 @@ export default {
       this.openDialogMoney = false;
       if (payload != null) {
         this.total_money = payload.money_target;
+        this.$store.commit('updateTargetMoney',payload)
       }
       this.progress.destroy();
       this.progressDoughnut();
@@ -310,6 +310,7 @@ export default {
     },
   },
   mounted() {
+    this.total_money = this.$store.state.targetMoney
     let investedTrend = this.$store.state.investedTrend;
     let investedTrend_x = [];
     let investedTrend_y = [];
@@ -392,6 +393,7 @@ export default {
         (total_invested_in_stocks + total_invested_in_cryptos)
       ).toFixed(2)
     );
+    
     this.progressDoughnut();
   },
 };

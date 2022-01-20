@@ -10,7 +10,7 @@
   "dependencies": {
     "chart.js": "^3.7.0",
     "core-js": "^3.6.5",
-    "firebase": "^9.6.2",
+    "firebase": "^8.10.0",
     "gsap": "^3.9.1",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0",

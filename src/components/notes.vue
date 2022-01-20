@@ -158,6 +158,8 @@ export default {
         this.$store.commit("addNotes", payload);
         this.notes = this.$store.state.notes;
         this.updatednoteList = this.notes;
+
+        // console.log(db);
       }
       this.openDialog = false;
     },

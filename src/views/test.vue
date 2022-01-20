@@ -2,7 +2,10 @@
   <v-app>
     <v-app-bar app clipped-left>
       <v-app-bar-nav-icon @click="mini = !mini"></v-app-bar-nav-icon>
-      <span class="title ml-3 mr-5"> FinTech&nbsp; </span>
+      <!-- <span class="title ml-3 mr-5"> FinTech&nbsp; </span> -->
+      <span class="mr-5 mt-3">
+        <img src="../assets/logo.png" style="zoom: 0.13" alt="" />
+      </span>
       <v-spacer></v-spacer>
 
       <v-row align="center" justify="center">
@@ -31,9 +34,7 @@
         >
           <v-list-item class="px-2">
             <v-list-item-avatar>
-              <v-img
-                src="https://randomuser.me/api/portraits/men/85.jpg"
-              ></v-img>
+              <v-img :src="require('../assets/persona.png')"></v-img>
             </v-list-item-avatar>
 
             <v-list-item-title style="font-family: 'Roboto'"

@@ -6,6 +6,7 @@
   </v-app>
 </template>
 <script>
+import { db } from "./firebase";
 export default {
   created() {
     // Set the correct theme based on the current dark mode
@@ -14,6 +15,49 @@ export default {
     } else {
       this.$vuetify.theme.light = true;
     }
+
+    //Set store state
+    db.collection("stocks")
+      .doc("stocks_info")
+      .get()
+      .then((doc) => {
+        this.$store.commit("setStocks", doc.data().stocks);
+      });
+
+    db.collection("cryptos")
+      .doc("cryptos_info")
+      .get()
+      .then((doc) => {
+        this.$store.commit("setCryptos", doc.data().cryptos);
+      });
+
+    db.collection("insurances")
+      .doc("insurances_info")
+      .get()
+      .then((doc) => {
+        this.$store.commit("setInsurances", doc.data().insurances);
+      });
+
+    db.collection("notes")
+      .doc("notes_info")
+      .get()
+      .then((doc) => {
+        this.$store.commit("setNotes", doc.data().notes);
+      });
+
+    db.collection("walletMoney")
+      .doc("walletMoney_info")
+      .get()
+      .then((doc) => {
+        this.$store.commit("setWalletMoney", doc.data().walletMoney);
+      });
+
+    db.collection("targetMoney")
+      .doc("targetMoney_info")
+      .get()
+      .then((doc) => {
+        this.$store.commit("setTargetMoney", doc.data().targetMoney);
+      });
   },
   watch: {
     "$vuetify.theme.dark": function (val) {
