@@ -76,6 +76,18 @@
       <insurances v-if="insurances" id="insurances-comp" class="mt-4 pb-6" />
       <notes v-if="notes" id="notes-comp" class="mt-4 pb-6" />
     </v-main>
+    <v-alert
+      text
+      dense
+      color="teal"
+      icon="mdi-clock-fast"
+      border="left"
+      style="z-index: 99; margin-bottom: 0; height: 30px; padding-top: 0;margin-top:50px;"
+    >
+      <span style="float: right" class="overline"
+        >Last Active : {{ lastActive }}</span
+      >
+    </v-alert>
   </v-app>
 </template>
 <script>
@@ -84,6 +96,7 @@ import stocks from "../components/stocks.vue";
 import cryptos from "../components/cryptos.vue";
 import insurances from "../components/insurances.vue";
 import notes from "../components/notes.vue";
+import { db } from "../firebase.js";
 export default {
   components: {
     stocks,
@@ -94,6 +107,7 @@ export default {
   },
   data() {
     return {
+      lastActive: "",
       drawer: true,
       overview: true,
       stocks: false,
@@ -146,6 +160,15 @@ export default {
       }
     },
   },
+
+  created() {
+    db.collection("lastActive")
+      .doc("lastActive_info")
+      .get()
+      .then((doc) => {
+        this.lastActive = doc.data().lastActive;
+      });
+  },
 };
 </script>
 
@@ -171,5 +194,11 @@ export default {
   #notes-comp {
     width: 80vw;
   }
+}
+</style>
+
+<style>
+.mdi-clock-fast {
+  padding-top: 10px;
 }
 </style>

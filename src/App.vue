@@ -8,6 +8,11 @@
 <script>
 import { db } from "./firebase";
 export default {
+  data() {
+    return {
+      lastActive: null,
+    };
+  },
   created() {
     // Set the correct theme based on the current dark mode
     if (localStorage.getItem("theme") == "dark") {
@@ -59,12 +64,22 @@ export default {
         this.$store.commit("setTargetMoney", doc.data().targetMoney);
       });
 
-      db.collection("investedTrend")
+    db.collection("investedTrend")
       .doc("investedTrend_info")
       .get()
       .then((doc) => {
         this.$store.commit("setInvestedTrend", doc.data().investedTrend);
       });
+  },
+  mounted() {
+    setTimeout(() => {
+      db.collection("lastActive").doc("lastActive_info").set(
+        {
+          lastActive: new Date().toLocaleString(),
+        },
+        { merge: true }
+      );
+    }, 10000);
   },
   watch: {
     "$vuetify.theme.dark": function (val) {
