@@ -57,6 +57,14 @@ export default new Vuex.Store({
         },
         { merge: true }
       );
+
+      const investedTrend = state.investedTrend;
+      db.collection("investedTrend").doc("investedTrend_info").set(
+        {
+          investedTrend,
+        },
+        { merge: true }
+      );
     },
 
     addCryptos(state, payload) {
@@ -106,6 +114,14 @@ export default new Vuex.Store({
         },
         { merge: true }
       );
+
+      const investedTrend = state.investedTrend;
+      db.collection("investedTrend").doc("investedTrend_info").set(
+        {
+          investedTrend,
+        },
+        { merge: true }
+      );
     },
 
     addInsurances(state, payload) {
@@ -146,6 +162,14 @@ export default new Vuex.Store({
       db.collection("insurances").doc("insurances_info").set(
         {
           insurances,
+        },
+        { merge: true }
+      );
+
+      const investedTrend = state.investedTrend;
+      db.collection("investedTrend").doc("investedTrend_info").set(
+        {
+          investedTrend,
         },
         { merge: true }
       );
@@ -278,5 +302,9 @@ export default new Vuex.Store({
     setTargetMoney(state, payload) {
       state.targetMoney = payload;
     },
+
+    setInvestedTrend(state, payload) {
+      state.investedTrend = payload;
+    }
   },
 });

@@ -58,6 +58,13 @@ export default {
       .then((doc) => {
         this.$store.commit("setTargetMoney", doc.data().targetMoney);
       });
+
+      db.collection("investedTrend")
+      .doc("investedTrend_info")
+      .get()
+      .then((doc) => {
+        this.$store.commit("setInvestedTrend", doc.data().investedTrend);
+      });
   },
   watch: {
     "$vuetify.theme.dark": function (val) {

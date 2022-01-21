@@ -103,6 +103,8 @@ export default {
       stocks_invested: 0,
       crypto_invested: 0,
       insurance_invested: 0,
+      stocks_len:0,
+      crypto_len:0,
       colorArr: [
         "#4a5355",
         "#ccc2c7",
@@ -197,7 +199,7 @@ export default {
         labels: label,
         datasets: [
           {
-            backgroundColor: this.chooseColor(4, "stock"),
+            backgroundColor: this.chooseColor(this.stocks_len, "stock"),
             data: y,
             hoverBorderColor: "black",
           },
@@ -228,7 +230,7 @@ export default {
         labels: label,
         datasets: [
           {
-            backgroundColor: this.chooseColor(4, "crypto"),
+            backgroundColor: this.chooseColor(this.crypto_len, "crypto"),
             data: y,
             hoverBorderColor: "black",
           },
@@ -323,6 +325,7 @@ export default {
     });
 
     let stocks = this.$store.state.stocks;
+    this.stocks_len = stocks.length;
     let stocks_x = [];
     let stocks_y = [];
 
@@ -345,6 +348,7 @@ export default {
     });
 
     let cryptos = this.$store.state.cryptos;
+    this.crypto_len = cryptos.length;
     let cryptos_x = [];
     let cryptos_y = [];
 
