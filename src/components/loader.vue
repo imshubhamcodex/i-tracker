@@ -42,19 +42,19 @@ export default {
 
     tl.fromTo(
       "#circle",
-      { duration: 1, x: -30, opacity: 0 },
+      { duration: 0.7, x: -30, opacity: 0 },
       { opacity: 1, x: 0, ease: "power1.out" },
       "+=0.5"
     );
     tl.fromTo(
       "#rect",
-      { duration: 0.8, x: 50, opacity: 0 },
+      { duration: 0.5, x: 50, opacity: 0 },
       { opacity: 1, x: 0, ease: "power1.out" },
       "-=0.1"
     );
     tl.fromTo(
       "#tri",
-      { duration: 0.7, y: -30, opacity: 0 },
+      { duration: 0.4, y: -30, opacity: 0 },
       { opacity: 1, y: 0, ease: "power1.out" }
     );
 
@@ -68,7 +68,7 @@ export default {
       tl.to("#tri", { opacity: 0, y: 50, ease: "power1.out" });
       tl.to("#rect", { opacity: 0, x: -80, ease: "power1.out" }, "-=0.1");
       tl.to("#circle", { opacity: 1, x: 70, ease: "power1.out" }, "-=0.2");
-    }, 3000);
+    }, 1800);
   },
   methods: {
     loadEnd() {
@@ -98,7 +98,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .loader {
   width: 44px;
   height: 44px;

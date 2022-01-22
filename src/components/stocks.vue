@@ -60,9 +60,7 @@
                       small
                       style="zoom: 0.5; margin-right: 10px"
                       >mdi-checkbox-blank-circle </v-icon
-                    >{{
-                      new Date().toLocaleDateString().replaceAll("/", "-")
-                    }}</span
+                    >{{ stock.date }}</span
                   >
                 </v-list-item-title>
                 <v-list-item-subtitle class="pt-5">

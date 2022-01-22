@@ -30,7 +30,7 @@ export default new Vuex.Store({
       state.stocks = state.stocks.filter((stock) => {
         return stock.ticker !== payload.ticker;
       });
-      payload.date = new Date().toLocaleDateString();
+      payload.date = new Date().toDateString().substring(4);
       state.stocks.unshift(payload);
 
       // upadte invested trend
@@ -81,7 +81,7 @@ export default new Vuex.Store({
       state.cryptos = state.cryptos.filter((crypto) => {
         return crypto.ticker !== payload.ticker;
       });
-      payload.date = new Date().toLocaleDateString();
+      payload.date = new Date().toDateString().substring(4);
       state.cryptos.unshift(payload);
 
       // upadte invested trend
@@ -89,19 +89,13 @@ export default new Vuex.Store({
       state.investedTrend.forEach((trend) => {
         if (trend.date === payload.date) {
           trend.amount =
-            Number(payload.invested) +
-            Number(payload.fixedDeposit) +
-            Number(trend.amount) -
-            amount_deducted;
+            Number(payload.invested) + Number(trend.amount) - amount_deducted;
           date_found = true;
         }
       });
       if (!date_found) {
         state.investedTrend.push({
-          amount:
-            Number(payload.invested) +
-            Number(payload.fixedDeposit) -
-            amount_deducted,
+          amount: Number(payload.invested) - amount_deducted,
           date: payload.date,
         });
       }
@@ -138,7 +132,7 @@ export default new Vuex.Store({
       state.insurances = state.insurances.filter((insurance) => {
         return insurance.ticker !== payload.ticker;
       });
-      payload.date = new Date().toLocaleDateString();
+      payload.date = new Date().toDateString().substring(4);
       state.insurances.unshift(payload);
 
       // upadte invested trend
@@ -179,6 +173,7 @@ export default new Vuex.Store({
       state.notes = state.notes.filter((note) => {
         return note.title !== payload.title;
       });
+      payload.date = new Date().toDateString().substring(4);
       state.notes.unshift(payload);
 
       // upload to firebase
@@ -305,6 +300,6 @@ export default new Vuex.Store({
 
     setInvestedTrend(state, payload) {
       state.investedTrend = payload;
-    }
+    },
   },
 });

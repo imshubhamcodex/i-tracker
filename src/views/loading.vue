@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div>
     <loader class="load" />
   </div>
 </template>

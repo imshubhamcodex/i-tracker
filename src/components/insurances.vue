@@ -70,8 +70,8 @@
                       <p class="font-weight-bold">{{ insurance.invested }}</p>
                     </v-col>
                     <v-col cols="6" md="6">
-                      <p class="overline">TYPE</p>
-                      <p class="font-weight-bold">{{ insurance.type }}</p>
+                      <p class="overline">MATURITY</p>
+                      <p class="font-weight-bold">{{ insurance.maturity }}</p>
                     </v-col>
                   </v-row>
                   <v-row>
@@ -108,6 +108,9 @@
                         "
                       >
                       </v-progress-linear>
+                    </v-col>
+                    <v-col cols="12" md="12">
+                      <p class="overline">Policy No.   {{ insurance.policy_number }}</p>
                     </v-col>
                   </v-row>
                 </v-list-item-subtitle>

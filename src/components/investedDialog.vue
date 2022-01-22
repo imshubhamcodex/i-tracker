@@ -48,6 +48,20 @@
                 readonly
               ></v-textarea>
             </v-col>
+            <v-col cols="12" sm="12" md="12">
+              <v-textarea
+                append-icon="mdi-currency-inr"
+                class="mx-2"
+                rows="1"
+                label="PASSIVE INCOME"
+                required
+                auto-grow
+                outlined
+                row-height="15"
+                v-model="passive_income"
+                readonly
+              ></v-textarea>
+            </v-col>
           </v-row>
         </v-container>
 
@@ -70,10 +84,10 @@ export default {
     "stocks_invested",
     "crypto_invested",
     "insurance_invested",
+    "passive_income"
   ],
   data: () => ({
     dialog: false,
-    money: 0,
   }),
   methods: {
     closeDialog() {

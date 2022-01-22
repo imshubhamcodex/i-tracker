@@ -29,13 +29,13 @@
                   append-icon="mdi-chart-pie"
                   class="mx-2"
                   rows="1"
-                  label="TYPE*"
+                  label="MATURITY*"
                   required
                   auto-grow
                   outlined
                   row-height="15"
-                  v-model="type"
-                  :rules="[rules.ticker, rules.length(3), rules.required]"
+                  v-model="maturity"
+                  :rules="[rules.number, rules.required]"
                 ></v-textarea>
               </v-col>
               <v-col cols="12" sm="6" md="6">
@@ -66,6 +66,20 @@
                   :rules="[rules.required, rules.number]"
                 ></v-textarea>
               </v-col>
+              <v-col cols="12" sm="12" md="12">
+                <v-textarea
+                  append-icon="mdi-currency-inr"
+                  class="mx-2"
+                  rows="1"
+                  label="POLICY No.*"
+                  required
+                  auto-grow
+                  outlined
+                  row-height="15"
+                  v-model="policy_number"
+                  :rules="[rules.required]"
+                ></v-textarea>
+              </v-col>
             </v-row>
           </v-container>
           <small>*indicates required field</small>
@@ -92,7 +106,8 @@ export default {
     ticker: null,
     premium: null,
     invested: null,
-    type: null,
+    maturity: null,
+    policy_number: null,
     rules: {
       ticker: (v) =>
         !!(v || "").match(/^[ A-Za-z_@./#&]*$/) || "Please enter a valid input",
@@ -115,13 +130,14 @@ export default {
       } else {
         if (
           this.ticker !== null &&
-          this.type !== null &&
+          this.maturity !== null &&
           this.premium !== null &&
-          this.invested !== null
+          this.invested !== null &&
+          this.policy_number !== null
         ) {
           if (
             this.ticker.match(/^[ A-Za-z_@./#&]*$/) &&
-            this.type.match(/^[ A-Za-z_@./#&]*$/) &&
+            this.maturity.toString().match(/^[0-9.]*$/) &&
             this.premium.toString().match(/^[0-9.]*$/) &&
             this.invested.toString().match(/^[0-9.]*$/)
           ) {
@@ -129,8 +145,9 @@ export default {
             this.$emit("addinsurance", {
               ticker: this.ticker,
               premium: this.premium,
-              type: this.type,
+              maturity: this.maturity,
               invested: this.invested,
+              policy_number: this.policy_number,
             });
           }
         }
@@ -146,13 +163,15 @@ export default {
       if (this.insuranceData !== null) {
         this.ticker = this.insuranceData.ticker;
         this.premium = this.insuranceData.premium;
-        this.type = this.insuranceData.type;
+        this.maturity = this.insuranceData.maturity;
         this.invested = this.insuranceData.invested;
+        this.policy_number = this.insuranceData.policy_number;
       } else {
         this.ticker = null;
         this.premium = null;
-        this.type = null;
+        this.maturity = null;
         this.invested = null;
+        this.policy_number = null;
       }
     },
   },

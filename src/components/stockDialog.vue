@@ -40,7 +40,7 @@
               </v-col>
               <v-col cols="12" sm="6" md="6">
                 <v-textarea
-                  append-icon="mdi-percent-outline"
+                  append-icon="mdi-currency-inr"
                   class="mx-2"
                   rows="1"
                   label="DIVIDEND*"

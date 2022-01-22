@@ -14,7 +14,9 @@
           </div>
           <div>
             <p class="ml-4 text-button">Invested amount</p>
-            <h2 class="mt-n5 ml-4 text-subtitle-2">₹ {{ all_invested }}</h2>
+            <h2 class="mt-n5 ml-4 text-subtitle-2">
+              ₹ {{ all_invested.toFixed(2) }}
+            </h2>
           </div>
         </div>
       </v-col>
@@ -75,6 +77,7 @@
       :stocks_invested="stocks_invested"
       :crypto_invested="crypto_invested"
       :insurance_invested="insurance_invested"
+      :passive_income="passive_income"
       @closeInvestedDialog="closeInvestedDialog"
     />
   </div>
@@ -103,8 +106,9 @@ export default {
       stocks_invested: 0,
       crypto_invested: 0,
       insurance_invested: 0,
-      stocks_len:0,
-      crypto_len:0,
+      passive_income: 0,
+      stocks_len: 0,
+      crypto_len: 0,
       colorArr: [
         "#4a5355",
         "#ccc2c7",
@@ -287,8 +291,10 @@ export default {
           {
             backgroundColor: ["cyan", "#ECF0F1"],
             data: [
-              this.all_invested,
-              Number(this.total_money) - this.all_invested,
+              this.all_invested + this.passive_income,
+              Number(this.total_money) -
+                this.all_invested -
+                this.passive_income,
             ],
             hoverBorderColor: ["black", "black"],
           },
@@ -333,6 +339,7 @@ export default {
 
     stocks.forEach((element) => {
       total_invested_in_stocks += Number(element.invested);
+      this.passive_income += Number(element.dividend);
     });
 
     this.stocks_invested = total_invested_in_stocks;
@@ -355,8 +362,8 @@ export default {
     let total_invested_in_cryptos = 0;
 
     cryptos.forEach((element) => {
-      total_invested_in_cryptos +=
-        Number(element.invested) + Number(element.fixedDeposit);
+      total_invested_in_cryptos += Number(element.invested);
+      this.passive_income += Number(element.fixedDeposit);
     });
 
     this.crypto_invested = total_invested_in_cryptos;
@@ -365,7 +372,7 @@ export default {
       cryptos_x.push(element.ticker);
       cryptos_y.push(
         (
-          ((Number(element.invested) + Number(element.fixedDeposit)) * 100) /
+          (Number(element.invested) * 100) /
           Number(total_invested_in_cryptos)
         ).toFixed(2)
       );
@@ -381,10 +388,7 @@ export default {
 
     this.insurance_invested = total_invested_in_insurance;
 
-    this.all_invested =
-      total_invested_in_insurance +
-      total_invested_in_stocks +
-      total_invested_in_cryptos;
+    this.all_invested = total_invested_in_stocks + total_invested_in_cryptos;
 
     this.investTrend(investedTrend_x, investedTrend_y);
     this.allStocks(stocks_x, stocks_y);
