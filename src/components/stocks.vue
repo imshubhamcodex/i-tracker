@@ -95,6 +95,7 @@
                         %
                       </span>
                       <v-progress-linear
+                        class="progress_bar"
                         color="light-blue"
                         height="10"
                         :size="10"
@@ -295,6 +296,9 @@ export default {
   #stock-add-button {
     margin-right: -10px;
     margin-top: -30px;
+  }
+  .progress_bar{
+    width: 32px !important;
   }
 }
 

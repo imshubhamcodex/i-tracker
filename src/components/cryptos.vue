@@ -111,6 +111,7 @@
                           margin-top: 2px;
                           margin-right: 35px;
                         "
+                        class="progress_bar"
                       >
                       </v-progress-linear>
                     </v-col>
@@ -303,6 +304,9 @@ export default {
   #crypto-add-button {
     margin-right: -10px;
     margin-top: -30px;
+  }
+  .progress_bar{
+    width: 32px !important;
   }
 }
 

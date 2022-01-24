@@ -3,7 +3,7 @@
     <div
       class="ma-auto"
       style="
-        max-width: 300px;
+        min-width: 250px;
         position: absolute;
         top: 50%;
         left: 50%;

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="loder-div">
     <div class="container-circle">
       <input type="checkbox" id="toggle-circle" />
       <label id="label-circle" for="toggle-circle"></label>
@@ -211,5 +211,11 @@ label[for="toggle-circle"] {
 input:checked + label[for="toggle-circle"] {
   border-width: 200vh;
   transform: rotate(45deg);
+}
+
+@media (max-width: 420px) {
+  #loder-div {
+    padding-bottom: 50px;
+  }
 }
 </style>
